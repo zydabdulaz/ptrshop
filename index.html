@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta
+         name="description"
+         content="Book Cover PDF Print Files - Browse and download high-quality book cover designs"
+      />
+      <title>PTR Shop - Book Cover Downloads</title>
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link
+         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+         rel="stylesheet"
+      />
+      <link rel="stylesheet" href="css/style.css" />
+   </head>
+   <body>
+      <!-- Header -->
+      <header class="header">
+         <div class="header-content">
+            <a href="#" class="logo" onclick="app.goHome()">
+               <span class="logo-text">PTRShop.id</span>
+            </a>
+            <nav class="nav">
+               <div id="breadcrumb" class="breadcrumb"></div>
+            </nav>
+            <div class="header-actions">
+               <button
+                  class="btn-icon cart-toggle"
+                  onclick="app.toggleCart()"
+                  aria-label="Toggle cart"
+               >
+                  <svg
+                     width="24"
+                     height="24"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                  >
+                     <circle cx="9" cy="21" r="1" />
+                     <circle cx="20" cy="21" r="1" />
+                     <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                  </svg>
+                  <span id="cart-count" class="cart-count">0</span>
+               </button>
+               <button
+                  class="btn-icon theme-toggle"
+                  onclick="app.toggleTheme()"
+                  aria-label="Toggle theme"
+               >
+                  <svg
+                     class="sun-icon"
+                     width="24"
+                     height="24"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                  >
+                     <circle cx="12" cy="12" r="5" />
+                     <path
+                        d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+                     />
+                  </svg>
+                  <svg
+                     class="moon-icon"
+                     width="24"
+                     height="24"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                  >
+                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                  </svg>
+               </button>
+            </div>
+         </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="main">
+         <div class="container">
+            <!-- View: Themes Grid -->
+            <section id="view-themes" class="view active">
+               <div class="view-header">
+                  <h1>Choose a Theme</h1>
+                  <p class="subtitle">Select a theme to explore available designs</p>
+               </div>
+               <div id="themes-grid" class="grid themes-grid"></div>
+            </section>
+
+            <!-- View: Designs Grid -->
+            <section id="view-designs" class="view">
+               <div class="view-header">
+                  <button class="btn-back" onclick="app.goBack()">
+                     <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                     >
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                     </svg>
+                     Back
+                  </button>
+                  <h1 id="designs-title">Designs</h1>
+                  <p class="subtitle">Select a design to configure options</p>
+               </div>
+               <div id="designs-grid" class="grid designs-grid"></div>
+            </section>
+
+            <!-- View: Options Panel -->
+            <section id="view-options" class="view">
+               <div class="view-header">
+                  <button class="btn-back" onclick="app.goBack()">
+                     <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                     >
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                     </svg>
+                     Back
+                  </button>
+                  <h1 id="options-title">Configure Options</h1>
+               </div>
+               <div class="options-layout">
+                  <div class="options-preview">
+                     <img id="options-preview-img" src="" alt="Design preview" />
+                  </div>
+                  <div class="options-form">
+                     <div class="form-group">
+                        <label>Size</label>
+                        <div id="size-options" class="option-buttons"></div>
+                     </div>
+                     <div class="form-group">
+                        <label>Type</label>
+                        <div id="type-options" class="option-buttons"></div>
+                     </div>
+                     <div class="form-group">
+                        <label>Quantity</label>
+                        <div class="quantity-control">
+                           <button class="btn-qty" onclick="app.adjustQty(-1)">−</button>
+                           <input type="number" id="quantity-input" value="1" min="1" max="99" />
+                           <button class="btn-qty" onclick="app.adjustQty(1)">+</button>
+                        </div>
+                     </div>
+                     <button class="btn-primary btn-add-cart" onclick="app.addToCart()">
+                        <svg
+                           width="20"
+                           height="20"
+                           viewBox="0 0 24 24"
+                           fill="none"
+                           stroke="currentColor"
+                           stroke-width="2"
+                        >
+                           <circle cx="9" cy="21" r="1" />
+                           <circle cx="20" cy="21" r="1" />
+                           <path
+                              d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+                           />
+                        </svg>
+                        Add to Cart
+                     </button>
+                  </div>
+               </div>
+            </section>
+         </div>
+      </main>
+
+      <!-- Cart Sidebar -->
+      <aside id="cart-sidebar" class="cart-sidebar">
+         <div class="cart-header">
+            <h2>Your Selection</h2>
+            <button class="btn-icon" onclick="app.toggleCart()" aria-label="Close cart">
+               <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+               >
+                  <path d="M18 6L6 18M6 6l12 12" />
+               </svg>
+            </button>
+         </div>
+         <div id="cart-items" class="cart-items"></div>
+         <div class="cart-footer">
+            <div class="cart-summary">
+               <span>Total Files:</span>
+               <span id="cart-total">0</span>
+            </div>
+            <button class="btn-primary btn-download" onclick="cart.downloadAll()" disabled>
+               <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+               >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+               </svg>
+               Download All
+            </button>
+            <button class="btn-secondary" onclick="cart.clear()">Clear All</button>
+         </div>
+      </aside>
+
+      <!-- Cart Overlay -->
+      <div id="cart-overlay" class="cart-overlay" onclick="app.toggleCart()"></div>
+
+      <!-- Toast Container -->
+      <div id="toast-container" class="toast-container"></div>
+
+      <!-- Download Progress Modal -->
+      <div id="download-modal" class="modal">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h3>Preparing Download</h3>
+            </div>
+            <div class="modal-body">
+               <div class="progress-bar">
+                  <div id="progress-fill" class="progress-fill"></div>
+               </div>
+               <p id="progress-text">Downloading files...</p>
+            </div>
+         </div>
+      </div>
+
+      <!-- Scripts -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+      <script src="js/cart.js"></script>
+      <script src="js/ui.js"></script>
+      <script src="js/app.js"></script>
+   </body>
+</html>
