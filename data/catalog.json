@@ -697,6 +697,354 @@
             ]
         },
         {
+            "id": "mb",
+            "name": "MB",
+            "thumbnail": "files/MB/thumb.jpg",
+            "designs": [
+                {
+                    "id": "01",
+                    "name": "Design 01",
+                    "thumbnail": "files/MB/01/thumb.png",
+                    "variants": [
+                        {
+                            "size": "A5",
+                            "type": "KN",
+                            "file": "files/MB/01/MB_01_A5_KN.pdf",
+                            "thumbnail": "files/MB/01/MB_01_A5_KN.png"
+                        },
+                        {
+                            "size": "A5",
+                            "type": "PLS",
+                            "file": "files/MB/01/MB_01_A5_PLS.pdf",
+                            "thumbnail": "files/MB/01/MB_01_A5_PLS.png"
+                        },
+                        {
+                            "size": "B5",
+                            "type": "KN",
+                            "file": "files/MB/01/MB_01_B5_KN.pdf",
+                            "thumbnail": "files/MB/01/MB_01_B5_KN.png"
+                        },
+                        {
+                            "size": "B5",
+                            "type": "PLS",
+                            "file": "files/MB/01/MB_01_B5_PLS.pdf",
+                            "thumbnail": "files/MB/01/MB_01_B5_PLS.png"
+                        }
+                    ]
+                },
+                {
+                    "id": "02",
+                    "name": "Design 02",
+                    "thumbnail": "files/MB/02/thumb.png",
+                    "variants": [
+                        {
+                            "size": "A5",
+                            "type": "KN",
+                            "file": "files/MB/02/MB_02_A5_KN.pdf",
+                            "thumbnail": "files/MB/02/MB_02_A5_KN.png"
+                        },
+                        {
+                            "size": "A5",
+                            "type": "PLS",
+                            "file": "files/MB/02/MB_02_A5_PLS.pdf",
+                            "thumbnail": "files/MB/02/MB_02_A5_PLS.png"
+                        },
+                        {
+                            "size": "B5",
+                            "type": "KN",
+                            "file": "files/MB/02/MB_02_B5_KN.pdf",
+                            "thumbnail": "files/MB/02/MB_02_B5_KN.png"
+                        },
+                        {
+                            "size": "B5",
+                            "type": "PLS",
+                            "file": "files/MB/02/MB_02_B5_PLS.pdf",
+                            "thumbnail": "files/MB/02/thumb.png"
+                        }
+                    ]
+                },
+                {
+                    "id": "03",
+                    "name": "Design 03",
+                    "thumbnail": "files/MB/03/thumb.png",
+                    "variants": [
+                        {
+                            "size": "A5",
+                            "type": "KN",
+                            "file": "files/MB/03/MB_03_A5_KN.pdf",
+                            "thumbnail": "files/MB/03/MB_03_A5_KN.png"
+                        },
+                        {
+                            "size": "A5",
+                            "type": "PLS",
+                            "file": "files/MB/03/MB_03_A5_PLS.pdf",
+                            "thumbnail": "files/MB/03/MB_03_A5_PLS.png"
+                        },
+                        {
+                            "size": "B5",
+                            "type": "KN",
+                            "file": "files/MB/03/MB_03_B5_KN.pdf",
+                            "thumbnail": "files/MB/03/MB_03_B5_KN.png"
+                        },
+                        {
+                            "size": "B5",
+                            "type": "PLS",
+                            "file": "files/MB/03/MB_03_B5_PLS.pdf",
+                            "thumbnail": "files/MB/03/MB_03_B5_PLS.png"
+                        }
+                    ]
+                },
+                {
+                    "id": "04",
+                    "name": "Design 04",
+                    "thumbnail": "files/MB/04/thumb.png",
+                    "variants": [
+                        {
+                            "size": "A5",
+                            "type": "KN",
+                            "file": "files/MB/04/MB_04_A5_KN.pdf",
+                            "thumbnail": "files/MB/04/MB_04_A5_KN.png"
+                        },
+                        {
+                            "size": "A5",
+                            "type": "PLS",
+                            "file": "files/MB/04/MB_04_A5_PLS.pdf",
+                            "thumbnail": "files/MB/04/MB_04_A5_PLS.png"
+                        },
+                        {
+                            "size": "B5",
+                            "type": "KN",
+                            "file": "files/MB/04/MB_04_B5_KN.pdf",
+                            "thumbnail": "files/MB/04/MB_04_B5_KN.png"
+                        },
+                        {
+                            "size": "B5",
+                            "type": "PLS",
+                            "file": "files/MB/04/MB_04_B5_PLS.pdf",
+                            "thumbnail": "files/MB/04/MB_04_B5_PLS.png"
+                        }
+                    ]
+                },
+                {
+                    "id": "05",
+                    "name": "Design 05",
+                    "thumbnail": "files/MB/05/thumb.png",
+                    "variants": [
+                        {
+                            "size": "A5",
+                            "type": "KN",
+                            "file": "files/MB/05/MB_05_A5_KN.pdf",
+                            "thumbnail": "files/MB/05/MB_05_A5_KN.png"
+                        },
+                        {
+                            "size": "A5",
+                            "type": "PLS",
+                            "file": "files/MB/05/MB_05_A5_PLS.pdf",
+                            "thumbnail": "files/MB/05/MB_05_A5_PLS.png"
+                        },
+                        {
+                            "size": "B5",
+                            "type": "KN",
+                            "file": "files/MB/05/MB_05_B5_KN.pdf",
+                            "thumbnail": "files/MB/05/MB_05_B5_KN.png"
+                        },
+                        {
+                            "size": "B5",
+                            "type": "PLS",
+                            "file": "files/MB/05/MB_05_B5_PLS.pdf",
+                            "thumbnail": "files/MB/05/MB_05_B5_PLS.png"
+                        }
+                    ]
+                },
+                {
+                    "id": "06",
+                    "name": "Design 06",
+                    "thumbnail": "files/MB/06/thumb.png",
+                    "variants": [
+                        {
+                            "size": "A5",
+                            "type": "KN",
+                            "file": "files/MB/06/MB_06_A5_KN.pdf",
+                            "thumbnail": "files/MB/06/MB_06_A5_KN.png"
+                        },
+                        {
+                            "size": "A5",
+                            "type": "PLS",
+                            "file": "files/MB/06/MB_06_A5_PLS.pdf",
+                            "thumbnail": "files/MB/06/MB_06_A5_PLS.png"
+                        },
+                        {
+                            "size": "B5",
+                            "type": "KN",
+                            "file": "files/MB/06/MB_06_B5_KN.pdf",
+                            "thumbnail": "files/MB/06/MB_06_B5_KN.png"
+                        },
+                        {
+                            "size": "B5",
+                            "type": "PLS",
+                            "file": "files/MB/06/MB_06_B5_PLS.pdf",
+                            "thumbnail": "files/MB/06/MB_06_B5_PLS.png"
+                        }
+                    ]
+                },
+                {
+                    "id": "07",
+                    "name": "Design 07",
+                    "thumbnail": "files/MB/07/thumb.png",
+                    "variants": [
+                        {
+                            "size": "A5",
+                            "type": "KN",
+                            "file": "files/MB/07/MB_07_A5_KN.pdf",
+                            "thumbnail": "files/MB/07/MB_07_A5_KN.png"
+                        },
+                        {
+                            "size": "A5",
+                            "type": "PLS",
+                            "file": "files/MB/07/MB_07_A5_PLS.pdf",
+                            "thumbnail": "files/MB/07/MB_07_A5_PLS.png"
+                        },
+                        {
+                            "size": "B5",
+                            "type": "KN",
+                            "file": "files/MB/07/MB_07_B5_KN.pdf",
+                            "thumbnail": "files/MB/07/MB_07_B5_KN.png"
+                        },
+                        {
+                            "size": "B5",
+                            "type": "PLS",
+                            "file": "files/MB/07/MB_07_B5_PLS.pdf",
+                            "thumbnail": "files/MB/07/MB_07_B5_PLS.png"
+                        }
+                    ]
+                },
+                {
+                    "id": "08",
+                    "name": "Design 08",
+                    "thumbnail": "files/MB/08/thumb.png",
+                    "variants": [
+                        {
+                            "size": "A5",
+                            "type": "KN",
+                            "file": "files/MB/08/MB_08_A5_KN.pdf",
+                            "thumbnail": "files/MB/08/MB_08_A5_KN.png"
+                        },
+                        {
+                            "size": "A5",
+                            "type": "PLS",
+                            "file": "files/MB/08/MB_08_A5_PLS.pdf",
+                            "thumbnail": "files/MB/08/MB_08_A5_PLS.png"
+                        },
+                        {
+                            "size": "B5",
+                            "type": "KN",
+                            "file": "files/MB/08/MB_08_B5_KN.pdf",
+                            "thumbnail": "files/MB/08/MB_08_B5_KN.png"
+                        },
+                        {
+                            "size": "B5",
+                            "type": "PLS",
+                            "file": "files/MB/08/MB_08_B5_PLS.pdf",
+                            "thumbnail": "files/MB/08/MB_08_B5_PLS.png"
+                        }
+                    ]
+                },
+                {
+                    "id": "09",
+                    "name": "Design 09",
+                    "thumbnail": "files/MB/09/thumb.png",
+                    "variants": [
+                        {
+                            "size": "A5",
+                            "type": "KN",
+                            "file": "files/MB/09/MB_09_A5_KN.pdf",
+                            "thumbnail": "files/MB/09/MB_09_A5_KN.png"
+                        },
+                        {
+                            "size": "A5",
+                            "type": "PLS",
+                            "file": "files/MB/09/MB_09_A5_PLS.pdf",
+                            "thumbnail": "files/MB/09/MB_09_A5_PLS.png"
+                        },
+                        {
+                            "size": "B5",
+                            "type": "KN",
+                            "file": "files/MB/09/MB_09_B5_KN.pdf",
+                            "thumbnail": "files/MB/09/MB_09_B5_KN.png"
+                        },
+                        {
+                            "size": "B5",
+                            "type": "PLS",
+                            "file": "files/MB/09/MB_09_B5_PLS.pdf",
+                            "thumbnail": "files/MB/09/MB_09_B5_PLS.png"
+                        }
+                    ]
+                },
+                {
+                    "id": "10",
+                    "name": "Design 10",
+                    "thumbnail": "files/MB/10/thumb.png",
+                    "variants": [
+                        {
+                            "size": "A5",
+                            "type": "KN",
+                            "file": "files/MB/10/MB_10_A5_KN.pdf",
+                            "thumbnail": "files/MB/10/MB_10_A5_KN.png"
+                        },
+                        {
+                            "size": "A5",
+                            "type": "PLS",
+                            "file": "files/MB/10/MB_10_A5_PLS.pdf",
+                            "thumbnail": "files/MB/10/MB_10_A5_PLS.png"
+                        },
+                        {
+                            "size": "B5",
+                            "type": "KN",
+                            "file": "files/MB/10/MB_10_B5_KN.pdf",
+                            "thumbnail": "files/MB/10/MB_10_B5_KN.png"
+                        },
+                        {
+                            "size": "B5",
+                            "type": "PLS",
+                            "file": "files/MB/10/MB_10_B5_PLS.pdf",
+                            "thumbnail": "files/MB/10/MB_10_B5_PLS.png"
+                        }
+                    ]
+                },
+                {
+                    "id": "11",
+                    "name": "Design 11",
+                    "thumbnail": "files/MB/11/thumb.png",
+                    "variants": [
+                        {
+                            "size": "A5",
+                            "type": "KN",
+                            "file": "files/MB/11/MB_11_A5_KN.pdf",
+                            "thumbnail": "files/MB/11/MB_11_A5_KN.png"
+                        },
+                        {
+                            "size": "A5",
+                            "type": "PLS",
+                            "file": "files/MB/11/MB_11_A5_PLS.pdf",
+                            "thumbnail": "files/MB/11/MB_11_A5_PLS.png"
+                        },
+                        {
+                            "size": "B5",
+                            "type": "KN",
+                            "file": "files/MB/11/MB_11_B5_KN.pdf",
+                            "thumbnail": "files/MB/11/MB_11_B5_KN.png"
+                        },
+                        {
+                            "size": "B5",
+                            "type": "PLS",
+                            "file": "files/MB/11/MB_11_B5_PLS.pdf",
+                            "thumbnail": "files/MB/11/MB_11_B5_PLS.png"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
             "id": "space",
             "name": "SPACE",
             "thumbnail": "files/SPACE/thumb.jpg",
