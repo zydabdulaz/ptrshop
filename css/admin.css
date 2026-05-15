@@ -1,0 +1,377 @@
+/* ========================================
+   Admin Page — Catalog Tag Editor
+   Inherits PTRShop design system tokens
+   ======================================== */
+
+/* ── Layout ────────────────────────────────── */
+.admin-main {
+   padding-top: calc(var(--header-height) + var(--space-2xl) + var(--space-xl));
+   padding-bottom: var(--space-2xl);
+   min-height: 100vh;
+}
+
+.admin-toolbar {
+   display: flex;
+   flex-wrap: wrap;
+   gap: var(--space-md);
+   margin-bottom: var(--space-xl);
+   align-items: center;
+}
+
+.admin-toolbar .search-wrapper {
+   flex: 1;
+   min-width: 220px;
+   margin-top: 0;
+}
+
+.admin-filter-select {
+   padding: var(--space-md) var(--space-lg);
+   padding-right: 2.5rem;
+   background: var(--bg-card);
+   backdrop-filter: var(--glass-blur);
+   -webkit-backdrop-filter: var(--glass-blur);
+   border: 1px solid var(--border-solid);
+   border-radius: var(--radius-xl);
+   font-size: 0.95rem;
+   font-family: inherit;
+   color: var(--text-primary);
+   outline: none;
+   transition: all var(--transition-fast);
+   cursor: pointer;
+   appearance: none;
+   -webkit-appearance: none;
+   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23718096' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+   background-repeat: no-repeat;
+   background-position: right 0.75rem center;
+   background-size: 1rem;
+}
+
+.admin-filter-select:focus {
+   border-color: var(--accent);
+   box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.admin-stats {
+   display: flex;
+   align-items: center;
+   gap: var(--space-sm);
+   font-size: 0.875rem;
+   color: var(--text-muted);
+   padding: var(--space-sm) var(--space-md);
+   background: var(--bg-tertiary);
+   border-radius: var(--radius-full);
+   white-space: nowrap;
+}
+
+.admin-stats strong {
+   color: var(--accent);
+   font-weight: 700;
+}
+
+/* ── Export Button ──────────────────────────── */
+.btn-export {
+   display: inline-flex;
+   align-items: center;
+   gap: var(--space-sm);
+   padding: var(--space-md) var(--space-lg);
+   background: var(--accent-gradient);
+   color: white;
+   border: none;
+   border-radius: var(--radius-xl);
+   font-weight: 600;
+   font-size: 0.9rem;
+   cursor: pointer;
+   transition: all var(--transition-fast);
+   box-shadow: 0 4px 15px rgba(107, 92, 231, 0.3);
+   white-space: nowrap;
+}
+
+.btn-export:hover {
+   transform: translateY(-2px);
+   box-shadow: 0 8px 25px rgba(107, 92, 231, 0.4);
+}
+
+.btn-export:active {
+   transform: translateY(0);
+}
+
+/* ── Design Table ──────────────────────────── */
+.admin-grid {
+   display: flex;
+   flex-direction: column;
+   gap: var(--space-md);
+}
+
+.admin-card {
+   display: grid;
+   grid-template-columns: 80px 1fr;
+   gap: var(--space-lg);
+   padding: var(--space-lg);
+   background: var(--bg-card);
+   backdrop-filter: var(--glass-blur);
+   -webkit-backdrop-filter: var(--glass-blur);
+   border: 1px solid var(--border);
+   border-radius: var(--radius-2xl);
+   box-shadow: var(--shadow-card);
+   transition: all var(--transition-fast);
+   animation: adminCardIn 0.3s ease both;
+}
+
+@keyframes adminCardIn {
+   from {
+      opacity: 0;
+      transform: translateY(12px);
+   }
+   to {
+      opacity: 1;
+      transform: translateY(0);
+   }
+}
+
+.admin-card:hover {
+   border-color: var(--accent);
+   box-shadow: var(--shadow-lg);
+}
+
+.admin-card-thumb {
+   width: 80px;
+   height: 100px;
+   border-radius: var(--radius-lg);
+   overflow: hidden;
+   background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
+   flex-shrink: 0;
+}
+
+.admin-card-thumb img {
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+}
+
+.admin-card-body {
+   display: flex;
+   flex-direction: column;
+   gap: var(--space-sm);
+   min-width: 0;
+}
+
+.admin-card-header {
+   display: flex;
+   align-items: center;
+   gap: var(--space-sm);
+   flex-wrap: wrap;
+}
+
+.admin-card-theme {
+   display: inline-flex;
+   align-items: center;
+   padding: 2px var(--space-sm);
+   background: var(--accent-gradient);
+   border-radius: var(--radius-full);
+   font-size: 0.7rem;
+   font-weight: 700;
+   color: white;
+   letter-spacing: 0.05em;
+   text-transform: uppercase;
+}
+
+.admin-card-name {
+   font-size: 1rem;
+   font-weight: 600;
+   color: var(--text-primary);
+}
+
+.admin-card-variants {
+   font-size: 0.8rem;
+   color: var(--text-muted);
+}
+
+/* ── Tag System ────────────────────────────── */
+.tag-section {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   gap: var(--space-xs);
+   margin-top: var(--space-xs);
+}
+
+.tag-pill {
+   display: inline-flex;
+   align-items: center;
+   gap: 4px;
+   padding: 3px var(--space-sm);
+   background: var(--accent-light);
+   color: var(--accent);
+   border: 1px solid transparent;
+   border-radius: var(--radius-full);
+   font-size: 0.78rem;
+   font-weight: 600;
+   transition: all var(--transition-fast);
+   animation: tagPopIn 0.2s ease;
+}
+
+@keyframes tagPopIn {
+   from {
+      opacity: 0;
+      transform: scale(0.8);
+   }
+   to {
+      opacity: 1;
+      transform: scale(1);
+   }
+}
+
+.tag-pill:hover {
+   border-color: var(--accent);
+}
+
+.tag-remove {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   width: 16px;
+   height: 16px;
+   background: transparent;
+   border: none;
+   color: var(--accent);
+   border-radius: 50%;
+   cursor: pointer;
+   font-size: 14px;
+   line-height: 1;
+   padding: 0;
+   opacity: 0.6;
+   transition: all var(--transition-fast);
+}
+
+.tag-remove:hover {
+   opacity: 1;
+   background: rgba(107, 92, 231, 0.15);
+   color: var(--error);
+}
+
+.tag-input-wrapper {
+   display: inline-flex;
+   align-items: center;
+}
+
+.tag-input {
+   width: 100px;
+   padding: 3px var(--space-sm);
+   background: transparent;
+   border: 1px dashed var(--border-solid);
+   border-radius: var(--radius-full);
+   font-size: 0.78rem;
+   font-family: inherit;
+   color: var(--text-primary);
+   outline: none;
+   transition: all var(--transition-fast);
+}
+
+.tag-input::placeholder {
+   color: var(--text-muted);
+   font-style: italic;
+}
+
+.tag-input:focus {
+   border-color: var(--accent);
+   border-style: solid;
+   background: var(--accent-light);
+   width: 140px;
+}
+
+/* ── Empty / No Results State ──────────────── */
+.admin-empty {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   padding: var(--space-2xl);
+   text-align: center;
+   color: var(--text-muted);
+   min-height: 300px;
+}
+
+.admin-empty svg {
+   width: 64px;
+   height: 64px;
+   margin-bottom: var(--space-lg);
+   opacity: 0.4;
+}
+
+.admin-empty p {
+   font-size: 1.1rem;
+   font-weight: 500;
+   color: var(--text-secondary);
+}
+
+/* ── Toast (reused from main, but scoped) ──── */
+.admin-toast-container {
+   position: fixed;
+   bottom: var(--space-xl);
+   right: var(--space-xl);
+   z-index: 300;
+   display: flex;
+   flex-direction: column;
+   gap: var(--space-sm);
+}
+
+/* ── Unsaved Changes Indicator ─────────────── */
+.unsaved-badge {
+   display: inline-flex;
+   align-items: center;
+   gap: var(--space-xs);
+   padding: var(--space-xs) var(--space-sm);
+   background: rgba(245, 158, 11, 0.15);
+   color: var(--warning);
+   border-radius: var(--radius-full);
+   font-size: 0.78rem;
+   font-weight: 600;
+   animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+   0%, 100% { opacity: 1; }
+   50% { opacity: 0.6; }
+}
+
+.unsaved-badge.hidden {
+   display: none;
+}
+
+/* ── Responsive ────────────────────────────── */
+@media (max-width: 768px) {
+   .admin-toolbar {
+      flex-direction: column;
+      align-items: stretch;
+   }
+
+   .admin-toolbar .search-wrapper {
+      min-width: 100%;
+   }
+
+   .admin-card {
+      grid-template-columns: 60px 1fr;
+      gap: var(--space-md);
+      padding: var(--space-md);
+   }
+
+   .admin-card-thumb {
+      width: 60px;
+      height: 75px;
+   }
+
+   .admin-stats {
+      justify-content: center;
+   }
+}
+
+@media (max-width: 480px) {
+   .admin-card {
+      grid-template-columns: 1fr;
+   }
+
+   .admin-card-thumb {
+      width: 100%;
+      height: 120px;
+   }
+}

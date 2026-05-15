@@ -155,6 +155,36 @@ def scan_files_directory() -> dict:
     
     return catalog
 
+def load_existing_tags() -> dict:
+    """Load existing tags from catalog.json so they survive re-indexing."""
+    tags_map = {}
+    if OUTPUT_FILE.exists():
+        try:
+            with open(OUTPUT_FILE, 'r', encoding='utf-8') as f:
+                existing = json.load(f)
+            for theme in existing.get("themes", []):
+                for design in theme.get("designs", []):
+                    key = f"{theme['id']}/{design['id']}"
+                    tags = design.get("tags", [])
+                    if tags:
+                        tags_map[key] = tags
+        except (json.JSONDecodeError, KeyError):
+            print("Warning: Could not parse existing catalog for tag preservation.")
+    return tags_map
+
+def merge_tags(catalog: dict, tags_map: dict) -> int:
+    """Merge preserved tags back into the newly scanned catalog."""
+    merged = 0
+    for theme in catalog.get("themes", []):
+        for design in theme.get("designs", []):
+            key = f"{theme['id']}/{design['id']}"
+            if key in tags_map:
+                design["tags"] = tags_map[key]
+                merged += 1
+            else:
+                design["tags"] = []
+    return merged
+
 def main():
     print("PTR Shop - PDF Catalog Indexer")
     print("=" * 40)
@@ -162,8 +192,16 @@ def main():
     # Ensure output directory exists
     OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     
+    # Preserve existing tags before scanning
+    tags_map = load_existing_tags()
+    if tags_map:
+        print(f"  Preserving tags for {len(tags_map)} designs...")
+    
     # Scan and build catalog
     catalog = scan_files_directory()
+    
+    # Merge preserved tags back
+    merged = merge_tags(catalog, tags_map)
     
     # Write output
     with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
@@ -182,7 +220,10 @@ def main():
     print(f"  Themes: {total_themes}")
     print(f"  Designs: {total_designs}")
     print(f"  Variants: {total_variants}")
+    if merged:
+        print(f"  Tags preserved: {merged} designs")
     print("\nDone!")
 
 if __name__ == "__main__":
     main()
+

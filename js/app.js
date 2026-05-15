@@ -312,7 +312,10 @@ const app = {
       const filtered = all.filter(t =>
          t.name.toLowerCase().includes(this.state.searchQuery) ||
          t.id.toLowerCase().includes(this.state.searchQuery) ||
-         t.designs.some(d => d.name.toLowerCase().includes(this.state.searchQuery))
+         t.designs.some(d =>
+            d.name.toLowerCase().includes(this.state.searchQuery) ||
+            (d.tags && d.tags.some(tag => tag.toLowerCase().includes(this.state.searchQuery)))
+         )
       );
       ui.renderThemes(filtered);
    },
