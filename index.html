@@ -5,75 +5,58 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta
          name="description"
-         content="Book Cover PDF Print Files - Browse and download high-quality book cover designs"
+         content="PTRShop — Browse and download high-quality book cover PDF print files in multiple sizes and types."
       />
       <title>PTR Shop - Book Cover Downloads</title>
+
+      <!-- Favicon -->
+      <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%236b5ce7'/><text x='16' y='23' text-anchor='middle' fill='white' font-size='18' font-weight='bold' font-family='sans-serif'>P</text></svg>" />
+
+      <!-- Fonts -->
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
       <link
          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
          rel="stylesheet"
       />
-      <link rel="stylesheet" href="css/style.css" />
+
+      <link rel="stylesheet" href="css/style.css?v=5" />
    </head>
    <body>
       <!-- Header -->
-      <header class="header">
+      <header class="header" role="banner">
          <div class="header-content">
-            <a href="#" class="logo" onclick="app.goHome()">
+            <a href="#/" class="logo" data-action="go-home" aria-label="PTRShop Home">
                <span class="logo-text">PTRShop.id</span>
             </a>
-            <nav class="nav">
-               <div id="breadcrumb" class="breadcrumb"></div>
+            <nav class="nav" aria-label="Breadcrumb navigation">
+               <div id="breadcrumb" class="breadcrumb" role="navigation" aria-label="Breadcrumb"></div>
             </nav>
             <div class="header-actions">
                <button
+                  id="cart-toggle-btn"
                   class="btn-icon cart-toggle"
-                  onclick="app.toggleCart()"
-                  aria-label="Toggle cart"
+                  data-action="toggle-cart"
+                  aria-label="Toggle cart sidebar"
                >
-                  <svg
-                     width="24"
-                     height="24"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="currentColor"
-                     stroke-width="2"
-                  >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                      <circle cx="9" cy="21" r="1" />
                      <circle cx="20" cy="21" r="1" />
                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
                   </svg>
-                  <span id="cart-count" class="cart-count">0</span>
+                  <span id="cart-count" class="cart-count" aria-live="polite">0</span>
                </button>
                <button
+                  id="theme-toggle-btn"
                   class="btn-icon theme-toggle"
-                  onclick="app.toggleTheme()"
-                  aria-label="Toggle theme"
+                  data-action="toggle-theme"
+                  aria-label="Toggle dark/light mode"
                >
-                  <svg
-                     class="sun-icon"
-                     width="24"
-                     height="24"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="currentColor"
-                     stroke-width="2"
-                  >
+                  <svg class="sun-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                      <circle cx="12" cy="12" r="5" />
-                     <path
-                        d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
-                     />
+                     <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
                   </svg>
-                  <svg
-                     class="moon-icon"
-                     width="24"
-                     height="24"
-                     viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="currentColor"
-                     stroke-width="2"
-                  >
+                  <svg class="moon-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                   </svg>
                </button>
@@ -82,29 +65,55 @@
       </header>
 
       <!-- Main Content -->
-      <main class="main">
+      <main class="main" role="main">
          <div class="container">
             <!-- View: Themes Grid -->
-            <section id="view-themes" class="view active">
+            <section id="view-themes" class="view active" aria-label="Theme selection">
                <div class="view-header">
                   <h1>Choose a Theme</h1>
                   <p class="subtitle">Select a theme to explore available designs</p>
+                  <div class="search-wrapper">
+                     <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
+                     </svg>
+                     <input
+                        type="search"
+                        id="search-input"
+                        class="search-input"
+                        placeholder="Search themes or designs..."
+                        autocomplete="off"
+                        aria-label="Search themes and designs"
+                     />
+                  </div>
+               </div>
+               <!-- Skeleton loader (shown during initial load, hidden by default) -->
+               <div id="themes-skeleton" class="skeleton-grid" hidden>
+                  <div class="skeleton-card"><div class="skeleton-image"></div><div class="skeleton-body"><div class="skeleton-line w-60"></div><div class="skeleton-line w-40"></div></div></div>
+                  <div class="skeleton-card"><div class="skeleton-image"></div><div class="skeleton-body"><div class="skeleton-line w-60"></div><div class="skeleton-line w-40"></div></div></div>
+                  <div class="skeleton-card"><div class="skeleton-image"></div><div class="skeleton-body"><div class="skeleton-line w-60"></div><div class="skeleton-line w-40"></div></div></div>
+                  <div class="skeleton-card"><div class="skeleton-image"></div><div class="skeleton-body"><div class="skeleton-line w-60"></div><div class="skeleton-line w-40"></div></div></div>
+               </div>
+               <!-- Error state (hidden by default) -->
+               <div id="themes-error" class="error-state" hidden>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                     <circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>
+                  </svg>
+                  <p id="error-message">Failed to load catalog data.</p>
+                  <button class="btn-primary" data-action="retry-load">
+                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
+                     </svg>
+                     Retry
+                  </button>
                </div>
                <div id="themes-grid" class="grid themes-grid"></div>
             </section>
 
             <!-- View: Designs Grid -->
-            <section id="view-designs" class="view">
+            <section id="view-designs" class="view" aria-label="Design selection">
                <div class="view-header">
-                  <button class="btn-back" onclick="app.goBack()">
-                     <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                     >
+                  <button class="btn-back" data-action="go-back" aria-label="Go back to themes">
+                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M19 12H5M12 19l-7-7 7-7" />
                      </svg>
                      Back
@@ -116,17 +125,10 @@
             </section>
 
             <!-- View: Options Panel -->
-            <section id="view-options" class="view">
+            <section id="view-options" class="view" aria-label="Design configuration">
                <div class="view-header">
-                  <button class="btn-back" onclick="app.goBack()">
-                     <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                     >
+                  <button class="btn-back" data-action="go-back" aria-label="Go back to designs">
+                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M19 12H5M12 19l-7-7 7-7" />
                      </svg>
                      Back
@@ -134,40 +136,31 @@
                   <h1 id="options-title">Configure Options</h1>
                </div>
                <div class="options-layout">
-                  <div class="options-preview">
+                  <div class="options-preview" data-action="open-lightbox" style="cursor: zoom-in;" title="Click to enlarge">
                      <img id="options-preview-img" src="" alt="Design preview" />
                   </div>
                   <div class="options-form">
                      <div class="form-group">
                         <label>Size</label>
-                        <div id="size-options" class="option-buttons"></div>
+                        <div id="size-options" class="option-buttons" role="radiogroup" aria-label="Select size"></div>
                      </div>
                      <div class="form-group">
                         <label>Type</label>
-                        <div id="type-options" class="option-buttons"></div>
+                        <div id="type-options" class="option-buttons" role="radiogroup" aria-label="Select type"></div>
                      </div>
                      <div class="form-group">
-                        <label>Quantity</label>
+                        <label for="quantity-input">Quantity</label>
                         <div class="quantity-control">
-                           <button class="btn-qty" onclick="app.adjustQty(-1)">−</button>
-                           <input type="number" id="quantity-input" value="1" min="1" max="99" />
-                           <button class="btn-qty" onclick="app.adjustQty(1)">+</button>
+                           <button class="btn-qty" data-action="adjust-qty" data-delta="-1" aria-label="Decrease quantity">−</button>
+                           <input type="number" id="quantity-input" value="1" min="1" max="99" aria-label="Quantity" />
+                           <button class="btn-qty" data-action="adjust-qty" data-delta="1" aria-label="Increase quantity">+</button>
                         </div>
                      </div>
-                     <button class="btn-primary btn-add-cart" onclick="app.addToCart()">
-                        <svg
-                           width="20"
-                           height="20"
-                           viewBox="0 0 24 24"
-                           fill="none"
-                           stroke="currentColor"
-                           stroke-width="2"
-                        >
+                     <button class="btn-primary btn-add-cart" data-action="add-to-cart">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                            <circle cx="9" cy="21" r="1" />
                            <circle cx="20" cy="21" r="1" />
-                           <path
-                              d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
-                           />
+                           <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
                         </svg>
                         Add to Cart
                      </button>
@@ -178,18 +171,11 @@
       </main>
 
       <!-- Cart Sidebar -->
-      <aside id="cart-sidebar" class="cart-sidebar">
+      <aside id="cart-sidebar" class="cart-sidebar" aria-label="Shopping cart">
          <div class="cart-header">
             <h2>Your Selection</h2>
-            <button class="btn-icon" onclick="app.toggleCart()" aria-label="Close cart">
-               <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-               >
+            <button class="btn-icon" data-action="toggle-cart" aria-label="Close cart">
+               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M18 6L6 18M6 6l12 12" />
                </svg>
             </button>
@@ -200,37 +186,30 @@
                <span>Total Files:</span>
                <span id="cart-total">0</span>
             </div>
-            <button class="btn-primary btn-download" onclick="cart.downloadAll()" disabled>
-               <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-               >
+            <button id="btn-download" class="btn-primary btn-download" data-action="cart-download" disabled>
+               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
                </svg>
                Download All
             </button>
-            <button class="btn-secondary" onclick="cart.clear()">Clear All</button>
+            <button class="btn-secondary" data-action="cart-clear">Clear All</button>
          </div>
       </aside>
 
       <!-- Cart Overlay -->
-      <div id="cart-overlay" class="cart-overlay" onclick="app.toggleCart()"></div>
+      <div id="cart-overlay" class="cart-overlay" data-action="toggle-cart"></div>
 
       <!-- Toast Container -->
-      <div id="toast-container" class="toast-container"></div>
+      <div id="toast-container" class="toast-container" aria-live="polite" role="status"></div>
 
       <!-- Download Progress Modal -->
-      <div id="download-modal" class="modal">
+      <div id="download-modal" class="modal" role="dialog" aria-label="Download progress">
          <div class="modal-content">
             <div class="modal-header">
                <h3>Preparing Download</h3>
             </div>
             <div class="modal-body">
-               <div class="progress-bar">
+               <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
                   <div id="progress-fill" class="progress-fill"></div>
                </div>
                <p id="progress-text">Downloading files...</p>
@@ -238,11 +217,51 @@
          </div>
       </div>
 
-      <!-- Scripts -->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-      <script src="js/cart.js"></script>
-      <script src="js/ui.js"></script>
-      <script src="js/app.js"></script>
+      <!-- Confirm Modal -->
+      <div id="confirm-modal" class="modal" role="alertdialog" aria-label="Confirmation">
+         <div class="modal-content modal-confirm">
+            <div class="modal-header">
+               <h3 id="confirm-title">Clear Cart?</h3>
+            </div>
+            <div class="modal-body">
+               <p id="confirm-message">All items will be removed. This cannot be undone.</p>
+            </div>
+            <div class="modal-actions">
+               <button class="btn-secondary" data-action="confirm-no">Cancel</button>
+               <button class="btn-danger" data-action="confirm-yes">Clear All</button>
+            </div>
+         </div>
+      </div>
+
+      <!-- Image Lightbox -->
+      <div id="lightbox" class="lightbox" role="dialog" aria-label="Image preview">
+         <button class="lightbox-close" data-action="close-lightbox" aria-label="Close preview">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+               <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+         </button>
+         <img id="lightbox-img" class="lightbox-img" src="" alt="Full size preview" />
+      </div>
+
+      <!-- Scroll to Top -->
+      <button id="scroll-top-btn" class="scroll-top-btn" data-action="scroll-top" aria-label="Scroll to top">
+         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M18 15l-6-6-6 6" />
+         </svg>
+      </button>
+
+      <!-- Footer -->
+      <footer class="site-footer" role="contentinfo">
+         <div class="footer-content">
+            <span class="footer-brand">PTRShop.id</span>
+            <span class="footer-divider">·</span>
+            <span class="footer-copy">&copy; 2026</span>
+         </div>
+      </footer>
+
+      <!-- Scripts: Core app loads immediately, CDN libs load lazily on first download -->
+      <script src="js/ui.js?v=5"></script>
+      <script src="js/cart.js?v=5"></script>
+      <script src="js/app.js?v=5"></script>
    </body>
 </html>
