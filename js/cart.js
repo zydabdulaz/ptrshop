@@ -1,21 +1,21 @@
 /**
- * Cart Module — Cart state, rendering, and batch download.
- *
- * Key improvements over original:
- * - Collision-safe unique IDs (incrementing counter, not Date.now)
- * - Inline quantity editing in cart items
- * - Clear-all confirmation dialog
- * - Lazy-loading of CDN scripts (pdf-lib, jszip) on first download
- * - Duplicate-safe ZIP filenames
- * - No console.log in production paths
+ * Cart Module — cart state, persistence, rendering, and batch ZIP download.
  */
-const cart = {
+import { esc, loadScriptOnce } from './utils.js';
+import { showToast, showConfirm, hideConfirm } from './ui.js';
+
+const STORAGE_KEY = 'ptr-cart';
+const MAX_QTY = 99;
+const CDN = {
+   pdfLib: 'https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js',
+   jszip: 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js'
+};
+
+export const cart = {
    items: [],
    _nextId: 1,
-   _scriptsLoaded: false,
 
-   // ── Lifecycle ─────────────────────────────────────────
-
+   // ── Lifecycle ────────────────────────────────────────
    init() {
       this.load();
       this.render();
@@ -23,45 +23,37 @@ const cart = {
 
    load() {
       try {
-         const saved = localStorage.getItem('ptr-cart');
-         if (saved) {
-            this.items = JSON.parse(saved);
-            // Restore the counter past any existing IDs
-            const maxId = this.items.reduce((max, item) => Math.max(max, item.id || 0), 0);
-            this._nextId = maxId + 1;
-         }
-      } catch (e) {
+         const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+         // Keep only well-formed rows; a corrupt/legacy entry shouldn't crash the app.
+         this.items = Array.isArray(parsed) ? parsed.filter(isValidItem) : [];
+         this._nextId = this.items.reduce((max, i) => Math.max(max, i.id || 0), 0) + 1;
+      } catch {
          this.items = [];
       }
    },
 
    save() {
-      localStorage.setItem('ptr-cart', JSON.stringify(this.items));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.items));
    },
 
-   // ── CRUD ──────────────────────────────────────────────
-
+   // ── CRUD ─────────────────────────────────────────────
    add(item) {
-      // Merge with existing item if same variant
+      // Merge only when the SAME variant of the SAME design in the SAME theme is re-added.
+      // Design ids repeat across themes, so themeId must be part of the key.
       const existing = this.items.find(i =>
-         i.designId === item.designId &&
-         i.size === item.size &&
-         i.type === item.type
-      );
+         i.themeId === item.themeId && i.designId === item.designId &&
+         i.size === item.size && i.type === item.type);
 
-      if (existing) {
-         existing.qty = Math.min(99, existing.qty + item.qty);
-      } else {
-         this.items.push({ id: this._nextId++, ...item });
-      }
+      if (existing) existing.qty = Math.min(MAX_QTY, existing.qty + item.qty);
+      else this.items.push({ id: this._nextId++, ...item });
 
       this.save();
       this.render();
-      ui.showToast(`Added ${item.designName} to cart`, 'success');
+      showToast(`Added ${item.designName} to cart`, 'success');
    },
 
    remove(id) {
-      this.items = this.items.filter(item => item.id !== id);
+      this.items = this.items.filter(i => i.id !== id);
       this.save();
       this.render();
    },
@@ -69,51 +61,41 @@ const cart = {
    updateQty(id, delta) {
       const item = this.items.find(i => i.id === id);
       if (!item) return;
-
-      const newQty = item.qty + delta;
-      if (newQty < 1) {
-         this.remove(id);
-         return;
-      }
-      item.qty = Math.min(99, newQty);
+      if (item.qty + delta < 1) return this.remove(id);
+      item.qty = Math.min(MAX_QTY, item.qty + delta);
       this.save();
       this.render();
    },
 
    confirmClear() {
-      if (this.items.length === 0) return;
-      ui.showConfirm('Clear Cart?', 'All items will be removed. This cannot be undone.');
+      if (this.items.length) showConfirm('Clear Cart?', 'All items will be removed. This cannot be undone.');
    },
 
    executeClear() {
-      ui.hideConfirm();
+      hideConfirm();
       this.items = [];
       this.save();
       this.render();
-      ui.showToast('Cart cleared', 'warning');
+      showToast('Cart cleared', 'warning');
    },
 
    getTotal() {
-      return this.items.reduce((sum, item) => sum + item.qty, 0);
+      return this.items.reduce((sum, i) => sum + i.qty, 0);
    },
 
-   // ── Rendering ─────────────────────────────────────────
-
+   // ── Rendering ────────────────────────────────────────
    render() {
       const container = document.getElementById('cart-items');
       const countEl = document.getElementById('cart-count');
-      const totalEl = document.getElementById('cart-total');
-      const downloadBtn = document.getElementById('btn-download');
-      // Safe fallback if app isn't initialized yet (initial load from localStorage)
-      const e = (typeof app !== 'undefined' && app.esc) ? app.esc : (s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'));
-
       const total = this.getTotal();
+
       countEl.textContent = total;
       countEl.classList.toggle('visible', total > 0);
-      totalEl.textContent = total;
+      document.getElementById('cart-total').textContent = total;
+      const downloadBtn = document.getElementById('btn-download');
       if (downloadBtn) downloadBtn.disabled = total === 0;
 
-      if (this.items.length === 0) {
+      if (!this.items.length) {
          container.innerHTML = `
             <div class="cart-empty">
                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -122,160 +104,132 @@ const cart = {
                </svg>
                <p>Your cart is empty</p>
                <small>Add some designs to get started</small>
-            </div>
-         `;
+            </div>`;
          return;
       }
 
       container.innerHTML = this.items.map(item => `
          <div class="cart-item" data-id="${item.id}">
             <div class="cart-item-preview">
-               <img src="${e(item.thumbnail)}" alt="${e(item.designName)}" loading="lazy"
-                    onerror="this.style.display='none'">
+               <img src="${esc(item.thumbnail)}" alt="${esc(item.designName)}" loading="lazy" onerror="this.style.display='none'">
             </div>
             <div class="cart-item-details">
-               <div class="cart-item-name">${e(item.designName)}</div>
-               <div class="cart-item-variant">${e(item.size)} · ${e(item.type)}</div>
+               <div class="cart-item-name">${esc(item.designName)}</div>
+               <div class="cart-item-variant">${esc(item.themeName)} · ${esc(item.size)} · ${esc(item.type)}</div>
                <div class="cart-item-qty-controls">
-                  <button class="btn-qty-sm" data-action="cart-update-qty"
-                          data-id="${item.id}" data-delta="-1" aria-label="Decrease quantity">−</button>
+                  <button class="btn-qty-sm" data-action="cart-update-qty" data-id="${item.id}" data-delta="-1" aria-label="Decrease quantity">−</button>
                   <span class="qty-value">${item.qty}</span>
-                  <button class="btn-qty-sm" data-action="cart-update-qty"
-                          data-id="${item.id}" data-delta="1" aria-label="Increase quantity">+</button>
+                  <button class="btn-qty-sm" data-action="cart-update-qty" data-id="${item.id}" data-delta="1" aria-label="Increase quantity">+</button>
                </div>
             </div>
-            <button class="cart-item-remove" data-action="cart-remove"
-                    data-id="${item.id}" aria-label="Remove ${e(item.designName)}">
-               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M18 6L6 18M6 6l12 12"/>
-               </svg>
+            <button class="cart-item-remove" data-action="cart-remove" data-id="${item.id}" aria-label="Remove ${esc(item.designName)}">
+               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
             </button>
-         </div>
-      `).join('');
+         </div>`).join('');
    },
 
-   // ── Lazy Script Loading ───────────────────────────────
-
-   async ensureScripts() {
-      if (this._scriptsLoaded) return;
-
-      const loadScript = (src) => new Promise((resolve, reject) => {
-         const script = document.createElement('script');
-         script.src = src;
-         script.crossOrigin = 'anonymous';
-         script.onload = resolve;
-         script.onerror = () => reject(new Error(`Failed to load: ${src}`));
-         document.head.appendChild(script);
-      });
-
-      await Promise.all([
-         loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js'),
-         loadScript('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js')
-      ]);
-
-      this._scriptsLoaded = true;
-   },
-
-   // ── PDF Duplication ───────────────────────────────────
-
+   // ── PDF Duplication ──────────────────────────────────
    async duplicatePages(pdfBytes, qty) {
-      const pdfDoc = await PDFLib.PDFDocument.load(pdfBytes, { ignoreEncryption: true });
-
       if (qty <= 1) return new Uint8Array(pdfBytes);
-
-      const newPdf = await PDFLib.PDFDocument.create();
-      const pageIndices = Array.from({ length: pdfDoc.getPageCount() }, (_, i) => i);
-
+      const src = await PDFLib.PDFDocument.load(pdfBytes, { ignoreEncryption: true });
+      const out = await PDFLib.PDFDocument.create();
+      const indices = src.getPageIndices();
       for (let i = 0; i < qty; i++) {
-         const copiedPages = await newPdf.copyPages(pdfDoc, pageIndices);
-         copiedPages.forEach(page => newPdf.addPage(page));
+         const pages = await out.copyPages(src, indices);
+         pages.forEach(p => out.addPage(p));
       }
-
-      return await newPdf.save();
+      return out.save();
    },
 
-   // ── Batch Download ────────────────────────────────────
-
+   // ── Batch Download ───────────────────────────────────
    async downloadAll() {
-      if (this.items.length === 0) return;
+      if (!this.items.length) return;
 
       const modal = document.getElementById('download-modal');
       const progressFill = document.getElementById('progress-fill');
+      const progressBar = progressFill.parentElement;
       const progressText = document.getElementById('progress-text');
 
+      const setProgress = (pct) => {
+         progressFill.style.width = `${pct}%`;
+         progressBar.setAttribute('aria-valuenow', pct);
+      };
+
       modal.classList.add('visible');
-      progressFill.style.width = '0%';
+      setProgress(0);
       progressText.textContent = 'Loading download tools...';
 
       try {
-         // Lazy-load CDN scripts on first download
-         await this.ensureScripts();
+         await Promise.all([loadScriptOnce(CDN.pdfLib), loadScriptOnce(CDN.jszip)]);
 
          const zip = new JSZip();
-         const totalItems = this.items.length;
-         let successCount = 0;
+         const total = this.items.length;
          const usedNames = new Set();
+         const failed = [];
 
-         for (let i = 0; i < this.items.length; i++) {
+         for (let i = 0; i < total; i++) {
             const item = this.items[i];
-            progressText.textContent = `Processing ${item.designName} (${i + 1}/${totalItems})...`;
+            progressText.textContent = `Processing ${item.designName} (${i + 1}/${total})...`;
 
             try {
                const response = await fetch(item.file);
                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
                const pdfBytes = await response.arrayBuffer();
-               if (pdfBytes.byteLength === 0) throw new Error('PDF file is empty');
+               if (pdfBytes.byteLength === 0) throw new Error('empty PDF');
 
-               let finalPdfBytes;
-               if (item.qty > 1) {
-                  try {
-                     finalPdfBytes = await this.duplicatePages(pdfBytes, item.qty);
-                  } catch (e) {
-                     finalPdfBytes = new Uint8Array(pdfBytes);
-                  }
-               } else {
-                  finalPdfBytes = new Uint8Array(pdfBytes);
+               let bytes;
+               try {
+                  bytes = await this.duplicatePages(pdfBytes, item.qty);
+               } catch {
+                  bytes = new Uint8Array(pdfBytes); // duplication failed → ship single copy
                }
-
-               // Build unique filename to prevent overwrites
-               let baseName = `${item.themeName}_${item.designName}_${item.size}_${item.type}`;
-               let fileName = `${baseName}.pdf`;
-               let counter = 2;
-               while (usedNames.has(fileName)) {
-                  fileName = `${baseName}_${counter++}.pdf`;
-               }
-               usedNames.add(fileName);
-
-               zip.file(fileName, finalPdfBytes);
-               successCount++;
-            } catch (err) {
-               // Silently skip failed files, report at the end
+               zip.file(uniqueName(usedNames, item), bytes);
+            } catch {
+               failed.push(item.designName);
             }
-
-            progressFill.style.width = `${Math.round(((i + 1) / totalItems) * 100)}%`;
+            setProgress(Math.round(((i + 1) / total) * 100));
          }
 
-         if (successCount === 0) throw new Error('No files were processed successfully');
+         if (failed.length === total) throw new Error('No files could be downloaded');
 
          progressText.textContent = 'Creating ZIP file...';
-
-         const zipBlob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
-
-         const url = URL.createObjectURL(zipBlob);
-         const link = document.createElement('a');
-         link.href = url;
-         link.download = `PTRShop_${new Date().toISOString().split('T')[0]}.zip`;
-         document.body.appendChild(link);
-         link.click();
-         document.body.removeChild(link);
-         URL.revokeObjectURL(url);
+         const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+         triggerDownload(blob, `PTRShop_${new Date().toISOString().split('T')[0]}.zip`);
 
          modal.classList.remove('visible');
-         ui.showToast(`Downloaded ${successCount} file(s)!`, 'success');
-      } catch (error) {
+         const ok = total - failed.length;
+         if (failed.length) showToast(`Downloaded ${ok} file(s), ${failed.length} failed`, 'warning');
+         else showToast(`Downloaded ${ok} file(s)!`, 'success');
+      } catch (err) {
          modal.classList.remove('visible');
-         ui.showToast('Download failed: ' + error.message, 'error');
+         showToast('Download failed: ' + err.message, 'error');
       }
    }
 };
+
+// ── Helpers ─────────────────────────────────────────────
+function isValidItem(i) {
+   return i && typeof i === 'object' &&
+      typeof i.file === 'string' && i.designName != null &&
+      i.size != null && i.type != null && Number.isFinite(i.qty) && i.qty > 0;
+}
+
+function uniqueName(used, item) {
+   const base = `${item.themeName}_${item.designName}_${item.size}_${item.type}`;
+   let name = `${base}.pdf`;
+   let n = 2;
+   while (used.has(name)) name = `${base}_${n++}.pdf`;
+   used.add(name);
+   return name;
+}
+
+function triggerDownload(blob, filename) {
+   const url = URL.createObjectURL(blob);
+   const link = document.createElement('a');
+   link.href = url;
+   link.download = filename;
+   document.body.appendChild(link);
+   link.click();
+   link.remove();
+   URL.revokeObjectURL(url);
+}

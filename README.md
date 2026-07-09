@@ -17,12 +17,17 @@ A modern, static web application for managing and downloading PDF print files (B
 ```
 PTRShop/
 ├── index.html              # Main entry point
+├── admin.html              # Catalog tag editor (operator tool, /admin.html)
 ├── css/
-│   └── style.css           # Styling with CSS variables
-├── js/
-│   ├── app.js              # Main application logic
-│   ├── ui.js               # UI rendering functions
-│   └── cart.js             # Cart & batch download
+│   ├── style.css           # Styling with CSS variables
+│   └── admin.css           # Tag-editor styles
+├── js/                     # ES modules (app.js is the entry)
+│   ├── app.js              # Init, routing, events, options controller
+│   ├── catalog.js          # State, catalog load & lookups
+│   ├── ui.js               # Rendering + overlays (toast/modal/lightbox)
+│   ├── cart.js             # Cart, persistence & batch download
+│   ├── utils.js            # esc / debounce / script loader
+│   └── admin.js            # Tag-editor logic
 ├── data/
 │   └── catalog.json        # Product catalog data
 ├── files/                  # PDF files (organized by theme/design)
@@ -64,6 +69,13 @@ PTRShop/
    ```bash
    python tools/indexer.py
    ```
+
+## Editing Search Tags
+
+Open `admin.html` (e.g. http://localhost:8080/admin.html), add/remove tags per
+design, then click **Export catalog.json** and replace `data/catalog.json` with
+the downloaded file. Edits are auto-saved to a local draft until you export.
+Tags survive re-running the indexer.
 
 ### Filename Pattern
 

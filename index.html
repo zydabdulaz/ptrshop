@@ -20,7 +20,7 @@
          rel="stylesheet"
       />
 
-      <link rel="stylesheet" href="css/style.css?v=5" />
+      <link rel="stylesheet" href="css/style.css?v=6" />
    </head>
    <body>
       <!-- Header -->
@@ -80,9 +80,9 @@
                         type="search"
                         id="search-input"
                         class="search-input"
-                        placeholder="Search themes or designs..."
+                        placeholder="Search themes, designs, or tags..."
                         autocomplete="off"
-                        aria-label="Search themes and designs"
+                        aria-label="Search themes, designs, and tags"
                      />
                   </div>
                </div>
@@ -259,9 +259,7 @@
          </div>
       </footer>
 
-      <!-- Scripts: Core app loads immediately, CDN libs load lazily on first download -->
-      <script src="js/ui.js?v=5"></script>
-      <script src="js/cart.js?v=5"></script>
-      <script src="js/app.js?v=5"></script>
+      <!-- ES modules: app.js is the entry; it imports catalog/ui/cart/utils. CDN libs load lazily on first download. -->
+      <script type="module" src="js/app.js?v=6"></script>
    </body>
 </html>

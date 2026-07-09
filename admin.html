@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta name="robots" content="noindex" />
+      <title>PTR Shop — Catalog Tag Editor</title>
+
+      <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%236b5ce7'/><text x='16' y='23' text-anchor='middle' fill='white' font-size='18' font-weight='bold' font-family='sans-serif'>P</text></svg>" />
+
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+      <link rel="stylesheet" href="css/style.css?v=6" />
+      <link rel="stylesheet" href="css/admin.css?v=6" />
+   </head>
+   <body>
+      <!-- Header -->
+      <header class="header" role="banner">
+         <div class="header-content">
+            <a href="index.html" class="logo" aria-label="Back to PTRShop">
+               <span class="logo-text">PTRShop.id</span>
+            </a>
+            <nav class="nav" aria-label="Page">
+               <div class="breadcrumb">
+                  <span class="breadcrumb-item"><a href="index.html" class="breadcrumb-link">Shop</a></span>
+                  <span class="breadcrumb-item">Tag Editor</span>
+               </div>
+            </nav>
+            <div class="header-actions">
+               <span id="unsaved-badge" class="unsaved-badge hidden">● Unsaved draft</span>
+               <button id="theme-toggle-btn" class="btn-icon theme-toggle" data-action="toggle-theme" aria-label="Toggle dark/light mode">
+                  <svg class="sun-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                     <circle cx="12" cy="12" r="5" />
+                     <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                  </svg>
+                  <svg class="moon-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                  </svg>
+               </button>
+            </div>
+         </div>
+      </header>
+
+      <main class="main admin-main" role="main">
+         <div class="container">
+            <div class="view-header">
+               <h1>Catalog Tag Editor</h1>
+               <p class="subtitle">Add search tags to designs, then export the updated catalog.json</p>
+            </div>
+
+            <!-- Toolbar -->
+            <div class="admin-toolbar">
+               <div class="search-wrapper">
+                  <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                     <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
+                  </svg>
+                  <input type="search" id="admin-search" class="search-input" placeholder="Search designs or tags..." autocomplete="off" aria-label="Search designs and tags" />
+               </div>
+               <select id="theme-filter" class="admin-filter-select" aria-label="Filter by theme">
+                  <option value="">All themes</option>
+               </select>
+               <button id="untagged-toggle" class="btn-secondary" data-action="toggle-untagged" aria-pressed="false">Untagged only</button>
+               <span class="admin-stats"><strong id="stat-designs">0</strong> designs · <strong id="stat-tagged">0</strong> tagged</span>
+               <button id="discard-btn" class="btn-secondary" data-action="discard-draft">Discard draft</button>
+               <button class="btn-export" data-action="export">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                  </svg>
+                  Export catalog.json
+               </button>
+            </div>
+
+            <!-- Design grid -->
+            <div id="admin-grid" class="admin-grid" aria-live="polite"></div>
+         </div>
+      </main>
+
+      <div class="admin-toast-container" id="toast-container" aria-live="polite" role="status"></div>
+
+      <script type="module" src="js/admin.js?v=6"></script>
+   </body>
+</html>
